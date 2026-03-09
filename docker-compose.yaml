@@ -1,0 +1,21 @@
+services:
+  application:
+    container_name: ricknmorty-api
+    image: ricknmorty-api:1.0
+    env_file: [ .env-api ]
+    ports: [ "8080:8080" ]
+    networks: [ ricknmorty-network ]
+    depends_on: [ database ]
+
+  database:
+    container_name: ricknmorty-database
+    image: ricknmorty-database:1.0
+    env_file: [ .env-database ]
+    networks: [ ricknmorty-network ]
+    volumes: [ pgdata:/var/lib/postgresql/data ]
+
+volumes:
+  pgdata:
+
+networks:
+  ricknmorty-network:

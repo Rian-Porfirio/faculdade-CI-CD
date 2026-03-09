@@ -1,0 +1,10 @@
+FROM maven:3.9-amazoncorretto-17-alpine AS build
+WORKDIR /app
+COPY pom.xml .
+COPY src ./src
+RUN mvn clean package -DSkipTests
+
+FROM amazoncorretto:17-alpine
+LABEL author="Porfírio"
+COPY --from=build /app/target/*.jar /app.jar
+ENTRYPOINT ["java", "-jar", "app.jar"]
