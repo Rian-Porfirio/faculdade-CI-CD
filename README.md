@@ -53,6 +53,7 @@ Congelar decisões técnicas significa empacotar na imagem Docker todas as escol
 necessárias para executar a aplicação, garantindo que ela rode de forma idêntica em qualquer
 infraestrutura. Essa expressão é frequentemente utilizada no contexto de DevOps para se referir
 à padronização do ambiente de execução de uma aplicação.
+
 ---
 
 ## 2) Explique a diferença entre:
@@ -69,22 +70,30 @@ container. A imagem possui toda a infraestrutura necessária para que a aplicaç
 seja executada. Dependências, libs, scripts, runtime e a própria aplicação em si.
 Em resumo, é o empacotamento de uma aplicação com todas as dependências necessárias
 para ser executada.
+
 ---
+
 #### Container
 Um container é a instância de uma imagem em execução que roda como processo
 isolado no Sistema Operacional, compartilhando o kernel do host, mas com seu
 próprio sistema de arquivos, rede e espaços de processos.
+
 ---
+
 #### Volume
 Volumes no Docker são mecanismos de persistência que permitem armazenar dados
 fora do sistema de arquivos do container, garantindo durabilidade, isolamento
 e portabilidade, independentemente do ciclo de vida do container.
+
 ---
+
 #### Rede Docker
 As redes no Docker dizem respeito à capacidade de gerir e isolar a comunicação
 entre containers, host e serviços externos por meio de redes virtuais, permitindo 
 conexão via resolução automática de nomes (DNS interno).
+
 ---
+
 #### E como esses elementos se relacionam no ciclo de vida de uma aplicação.
 - Imagem: permite distribuição, versionamento e reprodutibilidade de uma aplicação.
 - Container: nos permite criar várias instâncias isoladas de uma imagem em único host.
