@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ufotracker-deployment
+  namespace: ufology
+  labels:
+    app: ufotracker
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: ufotracker
+  template:
+    metadata:
+      labels:
+        app: ufotracker
+    spec:
+      containers:
+        - name: ufotracker
+          image: rianporfirio/ufo-tracker:1.0
+          ports:
+            - containerPort: 8080
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "256Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+          env:
+            # Redis - sobrescreve o localhost do application.yaml
+            - name: SPRING_DATA_REDIS_HOST
+              value: "ufocache-service"
+            - name: SPRING_DATA_REDIS_PORT
+              value: "6379"
+
+            # Banco - DB_NAME vem do ConfigMap
+            - name: DB_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: DB_NAME
+
+            # Sobrescreve a URL usando o DB_NAME acima ($(DB_NAME) é interpolado pelo K8s)
+            - name: SPRING_DATASOURCE_URL
+              value: "jdbc:postgresql://ufodb-service:5432/$(DB_NAME)"
+
+            # Usuário do banco
+            - name: POSTGRES_USERNAME
+              value: "postgres"
+
+            # Senha vem do Secret
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: DB_PASSWORD

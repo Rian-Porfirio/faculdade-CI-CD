@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ufocache-deployment
+  namespace: ufology
+  labels:
+    app: ufocache
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ufocache
+  template:
+    metadata:
+      labels:
+        app: ufocache
+    spec:
+      containers:
+        - name: ufocache
+          image: redis:7-alpine
+          ports:
+            - containerPort: 6379
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "64Mi"
+            limits:
+              cpu: "250m"
+              memory: "128Mi"

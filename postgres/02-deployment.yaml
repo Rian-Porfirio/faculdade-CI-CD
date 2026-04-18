@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ufodb-deployment
+  namespace: ufology
+  labels:
+    app: ufodb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ufodb
+  template:
+    metadata:
+      labels:
+        app: ufodb
+    spec:
+      containers:
+        - name: ufodb
+          image: leogloriainfnet/ufodb:1.0-win
+          ports:
+            - containerPort: 5432
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "256Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+          envFrom:
+            - secretRef:
+                name: ufodb-secret
