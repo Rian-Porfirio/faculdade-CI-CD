@@ -83,20 +83,17 @@ O Dockerfile utiliza **multi-stage build** para manter a imagem final enxuta:
 
 ```dockerfile
 # Stage 1: Build
-FROM eclipse-temurin:21-jdk-alpine AS builder
+FROM maven:3.9-amazoncorretto-21-alpine AS build
 WORKDIR /app
-COPY .mvn/ .mvn/
-COPY mvnw pom.xml ./
-RUN ./mvnw dependency:go-offline -B
+COPY pom.xml .
 COPY src ./src
-RUN ./mvnw package -DskipTests -B
+RUN mvn clean package -DskipTests
 
 # Stage 2: Run
-FROM eclipse-temurin:21-jre-alpine
-WORKDIR /app
-COPY --from=builder /app/target/*.jar app.jar
-EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "app.jar"]
+FROM amazoncorretto:21-alpine
+LABEL author="Rian"
+COPY --from=build /app/target/*.jar /app.jar
+ENTRYPOINT ["java", "-jar", "/app.jar"]
 ```
 
 ### Comandos
